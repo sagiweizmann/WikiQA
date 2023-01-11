@@ -1,28 +1,28 @@
-# DrQA
-This is a PyTorch implementation of the DrQA system described in the ACL 2017 paper [Reading Wikipedia to Answer Open-Domain Questions](https://arxiv.org/abs/1704.00051).
+# WikiQA
+This is a PyTorch implementation of the WikiQA system described in the ACL 2017 paper [Reading Wikipedia to Answer Open-Domain Questions](https://arxiv.org/abs/1704.00051).
 
 ## Quick Links
 
 - [About](#machine-reading-at-scale)
 - [Demo](#quick-start-demo)
-- [Installation](#installing-drqa)
-- [Components](#drqa-components)
+- [Installation](#installing-WikiQA)
+- [Components](#WikiQA-components)
 
 ## Machine Reading at Scale
 
-<p align="center"><img width="70%" src="img/drqa.png" /></p>
+<p align="center"><img width="70%" src="img/WikiQA.png" /></p>
 
-DrQA is a system for reading comprehension applied to open-domain question answering. In particular, DrQA is targeted at the task of "machine reading at scale" (MRS). In this setting, we are searching for an answer to a question in a potentially very large corpus of unstructured documents (that may not be redundant). Thus the system has to combine the challenges of document retrieval (finding the relevant documents) with that of machine comprehension of text (identifying the answers from those documents).
+WikiQA is a system for reading comprehension applied to open-domain question answering. In particular, WikiQA is targeted at the task of "machine reading at scale" (MRS). In this setting, we are searching for an answer to a question in a potentially very large corpus of unstructured documents (that may not be redundant). Thus the system has to combine the challenges of document retrieval (finding the relevant documents) with that of machine comprehension of text (identifying the answers from those documents).
 
-Our experiments with DrQA focus on answering factoid questions while using Wikipedia as the unique knowledge source for documents. Wikipedia is a well-suited source of large-scale, rich, detailed information. In order to answer any question, one must first retrieve the few potentially relevant articles among more than 5 million, and then scan them carefully to identify the answer.
+Our experiments with WikiQA focus on answering factoid questions while using Wikipedia as the unique knowledge source for documents. Wikipedia is a well-suited source of large-scale, rich, detailed information. In order to answer any question, one must first retrieve the few potentially relevant articles among more than 5 million, and then scan them carefully to identify the answer.
 
-Note that DrQA treats Wikipedia as a generic collection of articles and does not rely on its internal graph structure. As a result, **_DrQA can be straightforwardly applied to any collection of documents_**, as described in the retriever [README](scripts/retriever/README.md).
+Note that WikiQA treats Wikipedia as a generic collection of articles and does not rely on its internal graph structure. As a result, **_WikiQA can be straightforwardly applied to any collection of documents_**, as described in the retriever [README](scripts/retriever/README.md).
 
 This repository includes code, data, and pre-trained models for processing and querying Wikipedia as described in the paper -- see [Trained Models and Data](#trained-models-and-data). We also list several different datasets for evaluation, see [QA Datasets](#qa-datasets). Note that this work is a refactored and more efficient version of the original code. Reproduction numbers are very similar but not exact.
 
 ## Quick Start: Demo
 
-[Install](#installing-drqa) DrQA and [download](#trained-models-and-data) our models to start asking open-domain questions!
+[Install](#installing-WikiQA) WikiQA and [download](#trained-models-and-data) our models to start asking open-domain questions!
 
 Run `python scripts/pipeline/interactive.py` to drop into an interactive session. For each question, the top span and the Wikipedia paragraph it came from are returned.
 
@@ -93,19 +93,19 @@ and was the only no-hitter of any kind to be pitched in postseason play until
 Roy Halladay pitched a no-hitter on October 6, 2010.
 ```
 
-Try some of your own! Of course, DrQA might provide alternative facts, so enjoy the ride.
+Try some of your own! Of course, WikiQA might provide alternative facts, so enjoy the ride.
 
-## Installing DrQA
+## Installing WikiQA
 
-_Setting up DrQA is easy!_
+_Setting up WikiQA is easy!_
 
-DrQA requires Linux/OSX and Python 3.5 or higher. It also requires installing [PyTorch](http://pytorch.org/) version 1.0. Its other dependencies are listed in requirements.txt. CUDA is strongly recommended for speed, but not necessary.
+WikiQA requires Linux/OSX and Python 3.5 or higher. It also requires installing [PyTorch](http://pytorch.org/) version 1.0. Its other dependencies are listed in requirements.txt. CUDA is strongly recommended for speed, but not necessary.
 
-Run the following commands to clone the repository and install DrQA:
+Run the following commands to clone the repository and install WikiQA:
 
 ```bash
-git clone https://github.com/facebookresearch/DrQA.git
-cd DrQA; pip install -r requirements.txt; python setup.py develop
+git clone https://github.com/facebookresearch/WikiQA.git
+cd WikiQA; pip install -r requirements.txt; python setup.py develop
 ```
 
 Note: requirements.txt includes a subset of all the possible required packages. Depending on what you want to run, you might need to install an extra package (e.g. spacy).
@@ -113,8 +113,8 @@ Note: requirements.txt includes a subset of all the possible required packages. 
 If you use the CoreNLPTokenizer or SpacyTokenizer you also need to download the Stanford CoreNLP jars and spaCy `en` model, respectively. If you use Stanford CoreNLP, have the jars in your java `CLASSPATH` environment variable, or set the path programmatically with:
 
 ```python
-import drqa.tokenizers
-drqa.tokenizers.set_default('corenlp_classpath', '/your/corenlp/classpath/*')
+import WikiQA.tokenizers
+WikiQA.tokenizers.set_default('corenlp_classpath', '/your/corenlp/classpath/*')
 ```
 
 **IMPORTANT: The default [tokenizer](#tokenizers) is CoreNLP so you will need that in your `CLASSPATH` to run the README examples.**
@@ -129,7 +129,7 @@ If you do not already have a CoreNLP [download](https://stanfordnlp.github.io/Co
 
 Verify that it runs:
 ```python
-from drqa.tokenizers import CoreNLPTokenizer
+from WikiQA.tokenizers import CoreNLPTokenizer
 tok = CoreNLPTokenizer()
 tok.tokenize('hello world').words()  # Should complete immediately
 ```
@@ -146,12 +146,12 @@ To download all provided trained models and data for Wikipedia question answerin
 
 _Warning: this downloads a 7.5GB tarball (25GB untarred) and will take some time._
 
-This stores the data in `data/` at the file paths specified in the various modules' defaults. This top-level directory can be modified by setting a `DRQA_DATA` environment variable to point to somewhere else.
+This stores the data in `data/` at the file paths specified in the various modules' defaults. This top-level directory can be modified by setting a `WikiQA_DATA` environment variable to point to somewhere else.
 
 Default directory structure (see [embeddings](scripts/reader/README.md#note-on-word-embeddings) for more info on additional downloads for training):
 ```
-DrQA
-├── data (or $DRQA_DATA)
+WikiQA
+├── data (or $WikiQA_DATA)
     ├── datasets
     │   ├── SQuAD-v1.1-<train/dev>.<txt/json>
     │   ├── WebQuestions-<train/test>.txt
@@ -169,9 +169,9 @@ DrQA
 Default model paths for the different modules can also be modified programmatically in the code, e.g.:
 
 ```python
-import drqa.reader
-drqa.reader.set_default('model', '/path/to/model')
-reader = drqa.reader.Predictor()  # Default model loaded for prediction
+import WikiQA.reader
+WikiQA.reader.set_default('model', '/path/to/model')
+reader = WikiQA.reader.Predictor()  # Default model loaded for prediction
 ```
 
 #### Document Retriever
@@ -180,7 +180,7 @@ TF-IDF model using Wikipedia (unigrams and bigrams, 2^24 bins, simple tokenizati
 
 | Model | SQuAD P@5 | CuratedTREC P@5 | WebQuestions P@5 | WikiMovies P@5 | Size |
 | :---: | :-------: | :-------------: | :--------------: | :------------: | :---: |
-| [TF-IDF model](https://dl.fbaipublicfiles.com/drqa/docs-tfidf-ngram%3D2-hash%3D16777216-tokenizer%3Dsimple.npz.gz) | 78.0 | 87.6 | 75.0 | 69.8 | ~13GB |
+| [TF-IDF model](https://dl.fbaipublicfiles.com/WikiQA/docs-tfidf-ngram%3D2-hash%3D16777216-tokenizer%3Dsimple.npz.gz) | 78.0 | 87.6 | 75.0 | 69.8 | ~13GB |
 
 _P@5 here is defined as the % of questions for which the answer segment appears in one of the top 5 documents_.
 
@@ -190,31 +190,31 @@ Model trained only on SQuAD, evaluated in the SQuAD setting:
 
 | Model | SQuAD Dev EM | SQuAD Dev F1 | Size |
 | :---: | :-----------:| :----------: | :--: |
-| [Single model](https://dl.fbaipublicfiles.com/drqa/single.mdl) | 69.4 | 78.9 | ~130MB |
+| [Single model](https://dl.fbaipublicfiles.com/WikiQA/single.mdl) | 69.4 | 78.9 | ~130MB |
 
 Model trained with distant supervision without NER/POS/lemma features, evaluated on multiple datasets (test sets, dev set for SQuAD) in the full Wikipedia setting:
 
 | Model | SQuAD EM | CuratedTREC EM | WebQuestions EM | WikiMovies EM | Size |
 | :---: | :------: | :------------: | :-------------: | :-----------: | :--:
-| [Multitask model](https://dl.fbaipublicfiles.com/drqa/multitask.mdl) | 29.5 | 27.2 | 18.5 | 36.9 | ~270MB |
+| [Multitask model](https://dl.fbaipublicfiles.com/WikiQA/multitask.mdl) | 29.5 | 27.2 | 18.5 | 36.9 | ~270MB |
 
 #### Wikipedia
 
-Our full-scale experiments were conducted on the 2016-12-21 dump of English Wikipedia. The dump was processed with the [WikiExtractor](https://github.com/attardi/wikiextractor) and filtered for internal disambiguation, list, index, and outline pages (pages that are typically just links). We store the documents in an sqlite database for which `drqa.retriever.DocDB` provides an interface.
+Our full-scale experiments were conducted on the 2016-12-21 dump of English Wikipedia. The dump was processed with the [WikiExtractor](https://github.com/attardi/wikiextractor) and filtered for internal disambiguation, list, index, and outline pages (pages that are typically just links). We store the documents in an sqlite database for which `WikiQA.retriever.DocDB` provides an interface.
 
 | Database | Num. Documents | Size |
 | :------: | :------------: | :-----------------: |
-| [Wikipedia](https://dl.fbaipublicfiles.com/drqa/docs.db.gz) | 5,075,182 | ~13GB |
+| [Wikipedia](https://dl.fbaipublicfiles.com/WikiQA/docs.db.gz) | 5,075,182 | ~13GB |
 
 #### QA Datasets
 
-The datasets used for DrQA training and evaluation can be found here:
+The datasets used for WikiQA training and evaluation can be found here:
 
 - SQuAD: [train](https://rajpurkar.github.io/SQuAD-explorer/dataset/train-v1.1.json), [dev](https://rajpurkar.github.io/SQuAD-explorer/dataset/dev-v1.1.json)
-- WebQuestions: [train](http://nlp.stanford.edu/static/software/sempre/release-emnlp2013/lib/data/webquestions/dataset_11/webquestions.examples.train.json.bz2), [test](http://nlp.stanford.edu/static/software/sempre/release-emnlp2013/lib/data/webquestions/dataset_11/webquestions.examples.test.json.bz2), [entities](https://dl.fbaipublicfiles.com/drqa/freebase-entities.txt.gz)
-- WikiMovies: [train/test/entities](https://dl.fbaipublicfiles.com/drqa/WikiMovies.tar.gz)
+- WebQuestions: [train](http://nlp.stanford.edu/static/software/sempre/release-emnlp2013/lib/data/webquestions/dataset_11/webquestions.examples.train.json.bz2), [test](http://nlp.stanford.edu/static/software/sempre/release-emnlp2013/lib/data/webquestions/dataset_11/webquestions.examples.test.json.bz2), [entities](https://dl.fbaipublicfiles.com/WikiQA/freebase-entities.txt.gz)
+- WikiMovies: [train/test/entities](https://dl.fbaipublicfiles.com/WikiQA/WikiMovies.tar.gz)
 (Rehosted in expected format from https://research.fb.com/downloads/babi/)
-- CuratedTrec: [train/test](https://dl.fbaipublicfiles.com/drqa/CuratedTrec.tar.gz)
+- CuratedTrec: [train/test](https://dl.fbaipublicfiles.com/WikiQA/CuratedTrec.tar.gz)
 (Rehosted in expected format from https://github.com/brmson/dataset-factoid-curated)
 
 ##### Format A
@@ -256,11 +256,11 @@ file.json
 
 Some datasets have (potentially large) candidate lists for selecting answers. For example, WikiMovies' answers are OMDb entries while WebQuestions is based on Freebase. If we have known candidates, we can impose that all predicted answers must be in this list by discarding any higher scoring spans that are not.
 
-## DrQA Components
+## WikiQA Components
 
 ### Document Retriever
 
-DrQA is not tied to any specific type of retrieval system -- as long as it effectively narrows the search space and focuses on relevant documents.
+WikiQA is not tied to any specific type of retrieval system -- as long as it effectively narrows the search space and focuses on relevant documents.
 
 Following classical QA systems, we include an efficient (non-machine learning) document retrieval system based on sparse, TF-IDF weighted bag-of-word vectors. We use bags of hashed n-grams (here, unigrams and bigrams).
 
@@ -272,7 +272,7 @@ To interactively query Wikipedia:
 python scripts/retriever/interactive.py --model /path/to/model
 ```
 
-If `model` is left out our [default model](#document-retriever-1) will be used (assuming it was [downloaded](#installing-drqa)).
+If `model` is left out our [default model](#document-retriever-1) will be used (assuming it was [downloaded](#installing-WikiQA)).
 
 To evaluate the retriever accuracy (% match in top 5) on a dataset:
 
@@ -282,7 +282,7 @@ python scripts/retriever/eval.py /path/to/format/A/dataset.txt --model /path/to/
 
 ### Document Reader
 
-DrQA's Document Reader is a multi-layer recurrent neural network machine comprehension model trained to do extractive question answering. That is, the model tries to find the answer to any question as a text span in one of the returned documents.
+WikiQA's Document Reader is a multi-layer recurrent neural network machine comprehension model trained to do extractive question answering. That is, the model tries to find the answer to any question as a text span in one of the returned documents.
 
 The Document Reader was inspired by, and primarily trained on, the [SQuAD](https://arxiv.org/abs/1606.05250) dataset. It can also be used standalone on such SQuAD-like tasks where a specific context is supplied with the question, the answer to which is contained in the context.
 
@@ -302,11 +302,11 @@ To run model predictions on a dataset:
 python scripts/reader/predict.py /path/to/format/B/dataset.json --model /path/to/model
 ```
 
-### DrQA Pipeline
+### WikiQA Pipeline
 
-The full system is linked together in `drqa.pipeline.DrQA`.
+The full system is linked together in `WikiQA.pipeline.WikiQA`.
 
-To interactively ask questions using the full DrQA:
+To interactively ask questions using the full WikiQA:
 
 ```bash
 python scripts/pipeline/interactive.py
@@ -350,7 +350,7 @@ Optional arguments:
 
 ### Distant Supervision (DS)
 
-DrQA's performance improves significantly in the full-setting when provided with distantly supervised data from additional datasets. Given question-answer pairs but no supporting context, we can use string matching heuristics to automatically associate paragraphs to these training examples.
+WikiQA's performance improves significantly in the full-setting when provided with distantly supervised data from additional datasets. Given question-answer pairs but no supporting context, we can use string matching heuristics to automatically associate paragraphs to these training examples.
 
 >Question: What U.S. state’s motto is “Live free or Die”?
 >
@@ -371,11 +371,11 @@ Available tokenizers:
 - _RegexpTokenizer_: Custom regex-based PTB-style tokenizer (option: 'regexp').
 - _SimpleTokenizer_: Basic alpha-numeric/non-whitespace tokenizer (option: 'simple').
 
-See the [list](drqa/tokenizers/__init__.py) of mappings between string option names and tokenizer classes.
+See the [list](WikiQA/tokenizers/__init__.py) of mappings between string option names and tokenizer classes.
 
 ## Citation
 
-Please cite the ACL paper if you use DrQA in your work:
+Please cite the ACL paper if you use WikiQA in your work:
 
 ```
 @inproceedings{chen2017reading,
@@ -386,14 +386,14 @@ Please cite the ACL paper if you use DrQA in your work:
 }
 ```
 
-## DrQA Elsewhere
+## WikiQA Elsewhere
 
 ### Connection with ParlAI
-This implementation of the DrQA Document Reader is closely related to the one found in [ParlAI](https://github.com/facebookresearch/ParlAI). Here, however, the work is extended to interact with the Document Retriever in the open-domain setting. On the other hand, the implementation in ParlAI is more general, and follows the appropriate API to work in more QA/Dialog settings.
+This implementation of the WikiQA Document Reader is closely related to the one found in [ParlAI](https://github.com/facebookresearch/ParlAI). Here, however, the work is extended to interact with the Document Retriever in the open-domain setting. On the other hand, the implementation in ParlAI is more general, and follows the appropriate API to work in more QA/Dialog settings.
 
 ### Web UI
 
-[Hamed Zaghaghi](https://github.com/zaghaghi/) has provided a wrapper for a [Web UI](https://github.com/zaghaghi/drqa-webui).
+[Hamed Zaghaghi](https://github.com/zaghaghi/) has provided a wrapper for a [Web UI](https://github.com/zaghaghi/WikiQA-webui).
 
 ## License
-DrQA is BSD-licensed.
+WikiQA is BSD-licensed.

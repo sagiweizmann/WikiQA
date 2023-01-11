@@ -1,14 +1,6 @@
 # WikiQA
 This is a PyTorch implementation of the WikiQA system described in the ACL 2017 paper [Reading Wikipedia to Answer Open-Domain Questions](https://arxiv.org/abs/1704.00051).
 
-## Quick Links
-
-- [About](#machine-reading-at-scale)
-
-## Machine Reading at Scale
-
-<p align="center"><img width="70%" src="img/WikiQA.png" /></p>
-
 WikiQA is a system for reading comprehension applied to open-domain question answering. In particular, WikiQA is targeted at the task of "machine reading at scale" (MRS). In this setting, we are searching for an answer to a question in a potentially very large corpus of unstructured documents (that may not be redundant). Thus the system has to combine the challenges of document retrieval (finding the relevant documents) with that of machine comprehension of text (identifying the answers from those documents).
 
 Our experiments with WikiQA focus on answering factoid questions while using Wikipedia as the unique knowledge source for documents. Wikipedia is a well-suited source of large-scale, rich, detailed information. In order to answer any question, one must first retrieve the few potentially relevant articles among more than 5 million, and then scan them carefully to identify the answer.
